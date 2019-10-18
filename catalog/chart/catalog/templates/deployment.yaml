@@ -1,0 +1,34 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-{{ .Values.service.name }}-deployment
+spec:
+  replicas: 1
+  template:
+    metadata:
+      name: pod-catalog
+      labels:
+        app: catalog
+    spec:
+      containers:
+        - name: "{{  .Chart.Name  }}"
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: "{{ .Values.image.pullPolicy }}"
+          livenessProbe:
+            tcpSocket:
+              port: {{ .Values.catalog.port }}
+            initialDelaySeconds: 20
+            periodSeconds: 60
+          env:
+          - name: "spring_datasource_url"
+            value: "jdbc:mysql://{{ .Release.Name }}-{{ .Values.mysql.name }}-service:{{ .Values.mysql.port }}/{{ .Values.mysql.mysqlDatabase }}"
+          - name: "spring_datasource_username"
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Release.Name }}-{{ .Values.mysql.name }}-secret
+                key: mysqlUser
+          - name: "spring_datasource_password"
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Release.Name }}-{{ .Values.mysql.name }}-secret
+                key: mysqlPassword

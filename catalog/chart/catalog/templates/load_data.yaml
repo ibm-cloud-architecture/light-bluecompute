@@ -1,0 +1,70 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ .Release.Name }}-{{ .Values.service.name }}-job
+  labels:
+    app: catalog
+spec:
+  template:
+    metadata:
+      name: {{ .Release.Name }}-{{ .Values.service.name }}-job
+      labels:
+        app: catalog
+    spec:
+      restartPolicy: Never
+      initContainers:
+      - name: test-mysql
+        image: {{ .Values.mysql.repository }}
+        imagePullPolicy: {{ .Values.mysql.imagePullPolicy }}
+        command:
+        - "/bin/bash"
+        - "-c"
+        - "until mysql -h ${MYSQL_HOST} -P ${MYSQL_PORT} -u${MYSQL_USER} -p${MYSQL_PASSWORD} -e status; do echo waiting for mysql; sleep 1; done"
+        env:
+        - name: MYSQL_HOST
+          value: "{{ .Release.Name }}-{{ .Values.mysql.name }}-service"
+        - name: MYSQL_PORT
+          value: "{{ .Values.mysql.port }}"
+        - name: MYSQL_DATABASE
+          value: "{{ .Values.mysql.mysqlDatabase }}"
+        - name: MYSQL_USER
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Release.Name }}-{{ .Values.mysql.name }}-secret
+              key: mysqlUser
+        - name: MYSQL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Release.Name }}-{{ .Values.mysql.name }}-secret
+              key: mysqlPassword
+      containers:
+      - name: populate-mysql
+        image: {{ .Values.mysql.repository }}
+        imagePullPolicy: {{ .Values.mysql.imagePullPolicy }}
+        volumeMounts:
+        - mountPath: /catalog-data
+          name: catalog-data
+          readOnly: false
+        command: ["/bin/bash", "-c"]
+        args: ["cp /catalog-data/mysql_data.sql .; sed -i \"s/inventorydb/${MYSQL_DATABASE}/g\" mysql_data.sql; until mysql -h ${MYSQL_HOST} -P ${MYSQL_PORT} -u${MYSQL_USER} -p${MYSQL_PASSWORD} <mysql_data.sql; do echo \"waiting for mysql\"; sleep 1; done; echo \"Loaded data into database\";"]
+        env:
+        - name: MYSQL_HOST
+          value: "{{ .Release.Name }}-{{ .Values.mysql.name }}-service"
+        - name: MYSQL_PORT
+          value: "{{ .Values.mysql.port }}"
+        - name: MYSQL_DATABASE
+          value: "{{ .Values.mysql.mysqlDatabase }}"
+        - name: MYSQL_USER
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Release.Name }}-{{ .Values.mysql.name }}-secret
+              key: mysqlUser
+        - name: MYSQL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Release.Name }}-{{ .Values.mysql.name }}-secret
+              key: mysqlPassword
+      volumes:
+      - name: catalog-data
+        configMap:
+          name: {{ .Release.Name }}-{{ .Values.service.name }}-data

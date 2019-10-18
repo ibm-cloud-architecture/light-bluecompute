@@ -1,0 +1,22 @@
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+replicaCount: 1
+
+image:
+  repository: bluemixenablement/lightbluecompute-catalog
+  tag: latest
+  pullPolicy: Always
+
+service:
+  name: catalog-lightblue
+
+mysql:
+  name: mysql-lightblue
+  port: 3306
+  repository: bluemixenablement/lightbluecompute-mysql
+  imagePullPolicy: Always
+  mysqlDatabase: inventorydb
+
+catalog:
+  port: 8081
+  nodePort: 30111
