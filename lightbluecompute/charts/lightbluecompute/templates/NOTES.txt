@@ -16,7 +16,7 @@ To view the Bluecompute Web Application in your browser please do the following,
   nodeip=$(kubectl get nodes -o jsonpath='{.items[*].status.addresses[?(@.type=="ExternalIP")].address}' | awk '{print $1}')
 
 2. To get the Web Port for the Web Application, run the following command:
-  port=$(kubectl --namespace {{ .Release.Namespace }} get service bluecompute-web -o jsonpath='{.spec.ports[0].nodePort}')
+  port=$(kubectl --namespace {{ .Release.Namespace }} get service {{ .Release.Name }}-webapp-lightblue-service -o jsonpath='{.spec.ports[0].nodePort}')
 
 3. To get the entire URL for the Web Application, run the following command:
   echo "http://${nodeip}:${port}"
