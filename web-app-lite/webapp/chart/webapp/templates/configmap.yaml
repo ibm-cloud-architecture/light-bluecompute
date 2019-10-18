@@ -1,0 +1,65 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  labels:
+    app: webapp
+  name: {{ .Release.Name }}-{{ .Values.service.name }}-config
+data:
+  checks: "# Check the main website, including text content\r\n/\tIBM Cloud Architecture\r\n\r\n#Check
+    the Inventory page\r\n/catalog/ Dayton Meat Chopper\r\n\r\n# Check for stylesheets
+    and for text content in stylesheets\r\n/stylesheets/font-awesome/font-awesome.css
+    \   @font-face\r\n\r\n\r\n# Check a sub-domain\r\n#//some-subdomain.some-site.com/reviews
+    Review Data\r\n\r\n# Check HTTP access, and for text content\r\n# http://localhost:8000\tBlueCompute
+    Store!\r\n# http://localhost:8000/inventory/\tDayton Meat Chopper\r\n"
+  default.json: |
+    {
+      "Application": {
+        "client_id": "bded7892-6fda-45ea-bf68-a5106584c37e",
+        "client_secret": "",
+        "local_mode":false
+      },
+      "API-Server": {
+        "protocol": "http",
+        "host": "184.172.233.10:30120",
+        "org": "vbudiusibmcom-dev",
+        "catalog": "bluecompute-vbudiusibmcom"
+      },
+      "APIs": {
+        "catalog": {
+          "host": "{{ .Release.Name }}-{{ .Values.catalog.name }}-service:{{ .Values.catalog.port }}",
+          "base_path": "/micro",
+          "require": [
+              "client_id"
+          ]
+        },
+        "order": {
+          "host": "orderhost",
+          "base_path": "/api",
+          "require": [
+            "client_id",
+            "oauth"
+          ]
+        },
+        "customer": {
+          "host": "customerhost",
+          "base_path": "/api",
+          "require": [
+            "client_id"
+          ]
+        },
+        "oauth20": {
+          "base_path": "/oauth20",
+          "paths": {
+            "authz": "/authorize",
+            "token": "/token"
+          },
+          "grant_types": [
+            "password"
+          ],
+          "scopes": [
+            "inventory"
+          ],
+          "redirect_url": "http://localhost"
+        }
+      }
+    }

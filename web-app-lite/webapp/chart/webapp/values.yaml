@@ -1,0 +1,19 @@
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+replicaCount: 1
+
+image:
+  repository: bluemixenablement/lightbluecompute-webapp
+  tag: latest
+  pullPolicy: Always
+
+service:
+  name: webapp-lightblue
+
+webapp:
+  port: 8000
+  nodePort: 30220
+
+catalog:
+  name: catalog-lightblue
+  port: 8081

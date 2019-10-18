@@ -1,0 +1,51 @@
+{
+  "Application": {
+    "client_id": "bded7892-6fda-45ea-bf68-a5106584c37e",
+    "client_secret": "",
+    "local_mode":false
+  },
+  "API-Server": {
+    "protocol": "http",
+    "host": "184.172.233.10:30120",
+    "org": "vbudiusibmcom-dev",
+    "catalog": "bluecompute-vbudiusibmcom"
+  },
+  "APIs": {
+    "catalog": {
+      "host": "cataloghost",
+      "base_path": "/api",
+      "require": [
+          "client_id"
+      ]
+    },
+    "order": {
+      "host": "orderhost",
+      "base_path": "/api",
+      "require": [
+        "client_id",
+        "oauth"
+      ]
+    },
+    "customer": {
+      "host": "customerhost",
+      "base_path": "/api",
+      "require": [
+        "client_id"
+      ]
+    },
+    "oauth20": {
+      "base_path": "/oauth20",
+      "paths": {
+        "authz": "/authorize",
+        "token": "/token"
+      },
+      "grant_types": [
+        "password"
+      ],
+      "scopes": [
+        "inventory"
+      ],
+      "redirect_url": "http://localhost"
+    }
+  }
+}

@@ -1,0 +1,4 @@
+apiVersion: v1
+description: Web app for the Light Bluecompute
+name: webapp
+version: 0.0.1
