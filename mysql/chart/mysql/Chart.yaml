@@ -1,0 +1,4 @@
+apiVersion: v1
+description: MySQL service for the Light Bluecompute
+name: mysql
+version: 0.0.1

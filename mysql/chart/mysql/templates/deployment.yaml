@@ -1,0 +1,42 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-{{ .Values.service.name }}-deployment
+spec:
+  replicas: {{ .Values.replicaCount }}
+  template:
+    metadata:
+      name: pod-mysql
+      labels:
+        app: mysql
+    spec:
+      containers:
+        - name: "{{  .Chart.Name  }}"
+          image: "{{ .Values.image.repository }}"
+          imagePullPolicy: "{{ .Values.image.pullPolicy }}"
+          livenessProbe:
+            tcpSocket:
+              port: {{ .Values.mysql.port }}
+            initialDelaySeconds: 20
+            periodSeconds: 60
+          env:
+          - name: MYSQL_ROOT_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Release.Name }}-{{ .Values.service.name }}-secret
+                key: mysqlRootPassword
+          - name: MYSQL_USER
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Release.Name }}-{{ .Values.service.name }}-secret
+                key: mysqlUser
+          - name: MYSQL_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Release.Name }}-{{ .Values.service.name }}-secret
+                key: mysqlPassword
+          - name: MYSQL_DATABASE
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Release.Name }}-{{ .Values.service.name }}-secret
+                key: mysqlDatabase
