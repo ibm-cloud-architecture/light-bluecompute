@@ -36,6 +36,184 @@ You will see something like below.
 $ git version
 git version 2.20.1 (Apple Git-117)
 ```
+## Task 1 - Install the IBM Cloud CLI and Container Service plug-in, the kubernetes CLI, and Helm
+
+To install and test the app on IBM Cloud, you need these tools:
+
+- IBM Cloud CLI
+- IBM Cloud Kubernetes Service plug-in
+- Kubernetes CLI ([kubectl](https://kubernetes.io/docs/reference/kubectl/overview/))
+- [Helm](https://github.com/helm/helm), the Kubernetes package manager
+
+1. The deployment requires the IBM Cloud Kubernetes Service plug-in. Ensure that the IBM Cloud Kubernetes Service plug-in is installed by entering this command:
+
+```
+ibmcloud ks help
+```
+
+If the plug-in is not installed, install the plug-in by entering this command:
+
+```
+ibmcloud plugin install container-registry -r 'IBM Cloud'
+```
+
+2. Install kubectl on your platform by following the instructions in the [Kubernetes documentation](https://kubernetes.io/docs/tasks/tools/install-kubectl/).
+
+3. Install Helm on your platform by following these [instructions](https://github.com/helm/helm/blob/master/docs/install.md).
+
+4. Ensure that the tools are installed by entering these commands:
+
+```
+ibmcloud --version
+kubectl help
+helm -h
+```
+
+You will see something like below.
+
+```
+$ ibmcloud --version
+ibmcloud version 0.19.0+569dd56-2019-09-23T08:20:26+00:00
+$ kubectl help
+kubectl controls the Kubernetes cluster manager.
+
+Find more information at: https://kubernetes.io/docs/reference/kubectl/overview/
+
+Basic Commands (Beginner):
+  create         Create a resource from a file or from stdin.
+  expose         Take a replication controller, service, deployment or pod and
+expose it as a new Kubernetes Service
+  run            Run a particular image on the cluster
+  set            Set specific features on objects
+
+Basic Commands (Intermediate):
+  explain        Documentation of resources
+  get            Display one or many resources
+  edit           Edit a resource on the server
+  delete         Delete resources by filenames, stdin, resources and names, or
+by resources and label selector
+
+Deploy Commands:
+  rollout        Manage the rollout of a resource
+  scale          Set a new size for a Deployment, ReplicaSet, Replication
+Controller, or Job
+  autoscale      Auto-scale a Deployment, ReplicaSet, or ReplicationController
+
+Cluster Management Commands:
+  certificate    Modify certificate resources.
+  cluster-info   Display cluster info
+  top            Display Resource (CPU/Memory/Storage) usage.
+  cordon         Mark node as unschedulable
+  uncordon       Mark node as schedulable
+  drain          Drain node in preparation for maintenance
+  taint          Update the taints on one or more nodes
+
+Troubleshooting and Debugging Commands:
+  describe       Show details of a specific resource or group of resources
+  logs           Print the logs for a container in a pod
+  attach         Attach to a running container
+  exec           Execute a command in a container
+  port-forward   Forward one or more local ports to a pod
+  proxy          Run a proxy to the Kubernetes API server
+  cp             Copy files and directories to and from containers.
+  auth           Inspect authorization
+
+Advanced Commands:
+  apply          Apply a configuration to a resource by filename or stdin
+  patch          Update field(s) of a resource using strategic merge patch
+  replace        Replace a resource by filename or stdin
+  wait           Experimental: Wait for a specific condition on one or many
+resources.
+  convert        Convert config files between different API versions
+
+Settings Commands:
+  label          Update the labels on a resource
+  annotate       Update the annotations on a resource
+  completion     Output shell completion code for the specified shell (bash or
+zsh)
+
+Other Commands:
+  alpha          Commands for features in alpha
+  api-resources  Print the supported API resources on the server
+  api-versions   Print the supported API versions on the server, in the form of
+"group/version"
+  config         Modify kubeconfig files
+  plugin         Provides utilities for interacting with plugins.
+  version        Print the client and server version information
+
+Usage:
+  kubectl [flags] [options]
+
+Use "kubectl <command> --help" for more information about a given command.
+Use "kubectl options" for a list of global command-line options (applies to all
+commands).
+$ helm -h
+The Kubernetes package manager
+
+To begin working with Helm, run the 'helm init' command:
+
+	$ helm init
+
+This will install Tiller to your running Kubernetes cluster.
+It will also set up any necessary local configuration.
+
+Common actions from this point include:
+
+- helm search:    search for charts
+- helm fetch:     download a chart to your local directory to view
+- helm install:   upload the chart to Kubernetes
+- helm list:      list releases of charts
+
+Environment:
+  $HELM_HOME          set an alternative location for Helm files. By default, these are stored in ~/.helm
+  $HELM_HOST          set an alternative Tiller host. The format is host:port
+  $HELM_NO_PLUGINS    disable plugins. Set HELM_NO_PLUGINS=1 to disable plugins.
+  $TILLER_NAMESPACE   set an alternative Tiller namespace (default "kube-system")
+  $KUBECONFIG         set an alternative Kubernetes configuration file (default "~/.kube/config")
+
+Usage:
+  helm [command]
+
+Available Commands:
+  completion  Generate autocompletions script for the specified shell (bash or zsh)
+  create      create a new chart with the given name
+  delete      given a release name, delete the release from Kubernetes
+  dependency  manage a chart's dependencies
+  fetch       download a chart from a repository and (optionally) unpack it in local directory
+  get         download a named release
+  history     fetch release history
+  home        displays the location of HELM_HOME
+  init        initialize Helm on both client and server
+  inspect     inspect a chart
+  install     install a chart archive
+  lint        examines a chart for possible issues
+  list        list releases
+  package     package a chart directory into a chart archive
+  plugin      add, list, or remove Helm plugins
+  repo        add, list, remove, update, and index chart repositories
+  reset       uninstalls Tiller from a cluster
+  rollback    roll back a release to a previous revision
+  search      search for a keyword in charts
+  serve       start a local http web server
+  status      displays the status of the named release
+  template    locally render templates
+  test        test a release
+  upgrade     upgrade a release
+  verify      verify that a chart at the given path has been signed and is valid
+  version     print the client/server version information
+
+Flags:
+      --debug                           enable verbose output
+      --home string                     location of your Helm config. Overrides $HELM_HOME (default "/Users/Hemankita.Perabathini@ibm.com/.helm")
+      --host string                     address of Tiller. Overrides $HELM_HOST
+      --kube-context string             name of the kubeconfig context to use
+      --tiller-connection-timeout int   the duration (in seconds) Helm will wait to establish a connection to tiller (default 300)
+      --tiller-namespace string         namespace of Tiller (default "kube-system")
+
+Use "helm [command] --help" for more information about a command.
+```
+
+5. Install the [IBM Cloud CLI](https://cloud.ibm.com/docs/cli/reference/ibmcloud?topic=cloud-cli-install-ibmcloud-cli&cm_mmc=IBMBluemixGarageMethod-_-MethodSite-_-10-19-15::12-31-18-_-ibmcloud-cli-install&_ga=2.9071408.428156231.1571349383-306001710.1571349383#install_use).
 
 ## Task 4 - Deploy the app to the cluster
 
