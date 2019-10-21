@@ -19,24 +19,7 @@ spec:
         command:
         - "/bin/bash"
         - "-c"
-        - "until mysql -h ${MYSQL_HOST} -P ${MYSQL_PORT} -u${MYSQL_USER} -p${MYSQL_PASSWORD} -e status; do echo waiting for mysql; sleep 1; done"
-        env:
-        - name: MYSQL_HOST
-          value: "{{ .Release.Name }}-{{ .Values.mysql.name }}-service"
-        - name: MYSQL_PORT
-          value: "{{ .Values.mysql.port }}"
-        - name: MYSQL_DATABASE
-          value: "{{ .Values.mysql.mysqlDatabase }}"
-        - name: MYSQL_USER
-          valueFrom:
-            secretKeyRef:
-              name: {{ .Release.Name }}-{{ .Values.mysql.name }}-secret
-              key: mysqlUser
-        - name: MYSQL_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: {{ .Release.Name }}-{{ .Values.mysql.name }}-secret
-              key: mysqlPassword
+        - "until mysql -V; do echo mysql version test; sleep 1; done"
       containers:
       - name: populate-mysql
         image: {{ .Values.mysql.repository }}

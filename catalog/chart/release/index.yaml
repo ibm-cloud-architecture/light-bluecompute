@@ -2,11 +2,11 @@ apiVersion: v1
 entries:
   catalog:
   - apiVersion: v1
-    created: 2019-10-18T15:17:19.518680605-05:00
+    created: 2019-10-21T16:41:06.686196082-05:00
     description: Catalog service for the Light Bluecompute
-    digest: 59c087a7f52b5a34e2ab620b759e59f64da25993fdd205ca89f0954e3ca4dbce
+    digest: 1973bc698efa9b42f04e8ea295f25d800ae60b3a4071389840babcb49be8200b
     name: catalog
     urls:
     - catalog-0.0.1.tgz
     version: 0.0.1
-generated: 2019-10-18T15:17:19.518016479-05:00
+generated: 2019-10-21T16:41:06.685521201-05:00
