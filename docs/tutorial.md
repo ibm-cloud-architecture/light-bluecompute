@@ -215,7 +215,31 @@ Use "helm [command] --help" for more information about a command.
 
 5. Install the [IBM Cloud CLI](https://cloud.ibm.com/docs/cli/reference/ibmcloud?topic=cloud-cli-install-ibmcloud-cli&cm_mmc=IBMBluemixGarageMethod-_-MethodSite-_-10-19-15::12-31-18-_-ibmcloud-cli-install&_ga=2.9071408.428156231.1571349383-306001710.1571349383#install_use).
 
-## Task 4 - Deploy the app to the cluster
+## Task 2 - Provision a Kubernetes cluster on IBM Cloud Kubernetes Service
+
+Kubernetes is an open source system for automating the deployment, scaling, and management of containerized apps. The IBM Cloud Kubernetes Service provides a highly secure, native Kubernetes experience for rapidly building cloud-native apps. This tutorial uses the IBM Cloud Kubernetes Service to create a managed Kubernetes cluster and deploy a cloud-native app to the cluster.
+
+Two types of Kubernetes clusters are available in the IBM Cloud Kubernetes Service: Lite and Standard. The Lite tier is available at no cost. You can use it to provision a cluster with one worker node of type u1c.2x4 (2 core, 4 GB memory, 100 GB storage, 100 Mbps network). The Lite tier is sufficient to run the app.
+
+With the Standard tier of the IBM Cloud Kubernetes Service, you can provision a cluster in a user-selected data center with a configurable number of worker nodes and a configurable number of worker node sizes. The cluster is provisioned in the linked IBM Cloud infrastructure account. With a Standard cluster, the ingress controller and load balancer are enabled.
+
+For the purposes of this tutorial, you create a Lite Kubernetes cluster in the IBM Cloud Kubernetes Service.
+
+1. From the menu, click **Kubernetes**.
+
+![](../images/task4_kubernetes.png)
+
+2. Now click on **Create cluster** under **Kubernetes** cluster.
+
+![](../images/task4_create_cluster.png)
+
+3. Select **Free** plan, name your cluster and then click **Create cluster**.
+
+![](../images/task4_cluster_creation.png)
+
+4. Wait till the cluster get created and you should be good to go once it is ready.
+
+## Task 3 - Deploy the app to the cluster
 
 You packaged all the application components as [Kubernetes Helm charts](https://github.com/helm/charts). You can now deploy the application by following the instructions to configure kubectl for access to the Kubernetes cluster.
 
@@ -249,7 +273,27 @@ helm init
 
 The Helm client and the server side component, tiller, are initialized.
 
-5. Add a serviceaccount to deploy tiller.
+5. Add the helm package repository that contains the reference application:
+
+```
+helm repo add ibm-light-bc https://raw.githubusercontent.com/ibm-cloud-architecture/light-bluecompute/master/lightbluecompute/charts/release
+```
+
+6. Install the reference application:
+
+```
+helm install --name bluecompute ibm-light-bc/lightbluecompute
+```
+
+In few seconds, the containers are deployed to the cluster. The output of the installation contains instructions to access the application after it is deployed.
+
+NOTE: If you get an error message as follows, add a serviceaccount to deploy tiller as given below.
+
+```
+Error: release bluecompute failed: namespaces "default" is forbidden: User "system:serviceaccount:kube-system:default" cannot get resource "namespaces" in API group "" in the namespace "default"
+```
+
+Add a serviceaccount to deploy tiller.
 
 ```
 kubectl --namespace kube-system create serviceaccount tiller
@@ -261,24 +305,50 @@ kubectl --namespace kube-system patch deploy tiller-deploy \
  -p '{"spec":{"template":{"spec":{"serviceAccount":"tiller"}}}}'
 ```
 
-6. Add the helm package repository that contains the reference application:
-
-```
-helm repo add ibm-light-bc https://raw.githubusercontent.com/ibm-cloud-architecture/light-bluecompute/master/lightbluecompute/charts/release
-```
-
-7. Install the reference application:
-
-```
-helm install --name bluecompute ibm-light-bc/lightbluecompute
-```
-
-In few seconds, the containers are deployed to the cluster. The output of the installation contains instructions to access the application after it is deployed.
-
 For more information, see [Run a Cloud Native Microservices Application on a Kubernetes Cluster](https://github.com/ibm-cloud-architecture/light-bluecompute).
 
 Also, there is an extended version of bluecompute. Currently, we are using light version of it for this tutorial. But if you wanted to check out more elaborate version of this app, refer to [Cloud Native Java Microservices - Reference implementation based on Kubernetes](https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes). We have it implemented in both Springboot and Microprofile.
 
 8. Copy the application URL and paste it into your browser. Create a bookmark of the URL.
 
-![](images/bc-home.png)
+![](../images/bc-home.png)
+
+## Task 5 - Validate the app
+
+The app is installed in your Kubernetes cluster. Now you can explore the app.
+
+1. Click **Browse Item Catalog** to view the item catalog.
+
+![](../images/bc-item-catalog.png)
+
+2. Click one of the items to open the detail page.
+
+![](../images/bc-item-description.png)
+
+3. Explore the web app as much as you like.
+
+## Task 6 - View the Kubernetes dashboard
+
+The Kubernetes dashboard is the web-based user interface where you can deploy, modify, and view containerized application workloads on a Kubernetes cluster.
+
+To see the dashboard, in the same command-line window where you deployed the app to the cluster, run the following commands. If you're using a different command-line window, complete step 1 and 2; otherwise, skip to step 3.
+
+1. Log in to the application. If you need instructions to log in, see [step 5 of task 4](https://www.ibm.com/cloud/garage/tutorials/microservices-app-on-kubernetes?task=4).
+
+2. To access the kubernetes dashboard, access your cluster and click on **Kubernetes Dashboard**.
+
+3. The dashboard shows the different resources that are running on the cluster.
+
+![](../images/task6_dashboard.png)
+
+The BlueCompute app consists of different microservices, each of which are deployed to the Kubernetes cluster, as a deployment resource. Think of a deployment as the release unit of your app.
+
+4. In the Workloads section, click **Deployments** to show the BlueCompute deployment resources that were installed.
+
+Next, you'll explore pods. Pods are groups of containers that are deployed together on the same worker node. A pod is where the application code, which is packaged as a Docker container, runs under a Kubernetes context.
+
+5. Click Pods to see the list of pods. Click a pod that starts with `bluecompute-catalogxxxx` to view the Catalog Pods page. On that page, you can check the pod runtime logs and see the Docker container instances.
+
+Next, you'll explore services. Services are Kubernetes resources that define a logical set of pods and a policy to assess them. BlueCompute microservice components are exposed as services so that they can communicate among them and access each other. For example, the bluecompute-web service defines how users can access the web app.
+
+6. In the "Discovery and Load balancing" section, click **Services** to see the list of services. From there, click **bluecompute-webapp-lightblue-service** to see what that service contains.
