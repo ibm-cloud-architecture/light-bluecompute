@@ -3,8 +3,8 @@
 replicaCount: 1
 
 image:
-  repository: bluemixenablement/lightbluecompute-webapp
-  tag: latest
+  repository: ibmcase/lightbluecompute-webapp
+  tag: v1.0.0
   pullPolicy: Always
 
 service:
