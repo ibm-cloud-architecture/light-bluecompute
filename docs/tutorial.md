@@ -239,6 +239,8 @@ For the purposes of this tutorial, you create a Lite Kubernetes cluster in the I
 
 4. Wait till the cluster get created and you should be good to go once it is ready.
 
+![](../images/task4_cluster_created.png)
+
 ## Task 3 - Deploy the app to the cluster
 
 You packaged all the application components as [Kubernetes Helm charts](https://github.com/helm/charts). You can now deploy the application by following the instructions to configure kubectl for access to the Kubernetes cluster.
