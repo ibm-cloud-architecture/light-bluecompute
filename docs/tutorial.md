@@ -313,7 +313,7 @@ Also, there is an extended version of bluecompute. Currently, we are using light
 
 ![](../images/bc-home.png)
 
-## Task 5 - Validate the app
+## Task 4 - Validate the app
 
 The app is installed in your Kubernetes cluster. Now you can explore the app.
 
@@ -327,7 +327,7 @@ The app is installed in your Kubernetes cluster. Now you can explore the app.
 
 3. Explore the web app as much as you like.
 
-## Task 6 - View the Kubernetes dashboard
+## Task 5 - View the Kubernetes dashboard
 
 The Kubernetes dashboard is the web-based user interface where you can deploy, modify, and view containerized application workloads on a Kubernetes cluster.
 
@@ -352,3 +352,98 @@ Next, you'll explore pods. Pods are groups of containers that are deployed toget
 Next, you'll explore services. Services are Kubernetes resources that define a logical set of pods and a policy to assess them. BlueCompute microservice components are exposed as services so that they can communicate among them and access each other. For example, the bluecompute-web service defines how users can access the web app.
 
 6. In the "Discovery and Load balancing" section, click **Services** to see the list of services. From there, click **bluecompute-webapp-lightblue-service** to see what that service contains.
+
+## Task 6 - Update the web application by using the Kubernetes CLI
+
+**TBD**
+
+## Task 7 - (Optional) Monitor the Kubernetes environment with Prometheus and Grafana
+
+Cloud Service Management & Operations (CSMO) is important for cloud-native microservices-style apps.
+
+To learn how to use the tools and services on IBM Cloud to implement CSMO for the microservice app, you can deploy a self-contained and independent monitoring stack into the Kubernetes cluster. Helm is Kubernetes package manager that facilitates the deployment of prepackaged, reusable Kubernetes resources. With the aid of Helm, the monitoring component, Prometheus, and the display component, Grafana, are deployed. After they are deployed, you can view the Grafana dashboard to monitor the app.
+
+1. Get the below repository.
+
+```
+git clone https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes-csmo.git
+
+cd refarch-cloudnative-kubernetes-csmo/
+```
+
+2. Install the Grafana and Prometheus components.
+
+To get the ibm cloud region information, run `ibmcloud regions`.
+
+```
+$ ibmcloud regions
+Listing regions...
+
+Name            Display name
+au-syd          Sydney
+jp-osa          Osaka
+jp-tok          Tokyo
+kr-seo          Seoul
+eu-de           Frankfurt
+eu-gb           London
+us-south        Dallas
+us-south-test   Dallas Test
+us-east         Washington DC
+```
+
+To get the cluster id, run `ibmcloud clusters`.
+
+```
+$ ibmcloud ks clusters
+OK
+Name                 ID                                 State      Created        Workers   Location          Version                   Resource Group Name
+bc-tutorial          4de24b6b12bd461cacc0a85fa75a84d2   normal     5 months ago   3         Dallas            1.15.4_1518*              default
+```
+
+3. On a Mac or Linux system, enter this command:
+
+```
+./install_csmo.sh <cluster-name> <ibmcloud-api-key> <ibmcloud-region> <namespace> <resource-group>
+```
+
+For instance it will be as follows.
+
+```
+./install_csmo.sh bc-tutorial xxxxxxxxxxxxxxxxxxxxxxxxxx us-south default default
+```
+
+On a Windows system, enter this command:
+
+```
+install_csmo.bat <cluster-name> <ibmcloud-api-key> <ibmcloud-region> <namespace> <resource-group>
+```
+
+When the installation is completed, the Grafana URL and admin password are displayed.
+
+4. Import the dashboards.
+
+- On a Mac or Linux system, enter this command:
+
+```
+./import_dashboards.sh <grafana_url> <grafana_password>
+```
+
+- On a Windows system, enter this command:
+
+```
+import_dashboards.bat <grafana_url> <grafana_password>
+```
+
+5. You can now view the Grafana dashboard by typing the Grafana URL from step 2 in a web browser. For more information, see [CSMO for Kubernetes based Cloud Native Reference Application](https://github.com/ibm-cloud-architecture/refarch-cloudnative-kubernetes-csmo).
+
+## Task 8 - (Optional) Delete the app from the cluster
+
+**TBD**
+
+## What's next
+
+**TBD**
+
+## Appendix 1: Install Kubernetes by using the command line
+
+**TBD**
