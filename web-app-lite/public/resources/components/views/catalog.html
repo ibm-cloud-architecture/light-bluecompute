@@ -5,7 +5,9 @@
     <ul class="pure-menu-list">
       <li class="pure-menu-item"><a class="pure-menu-link" href="#!/">Home</a></li>
       <li class="pure-menu-item pure-menu-selected"><a class="pure-menu-link" href="#!/catalog">Catalog</a></li>
-      <li class="pure-menu-item"><a class="pure-menu-link" href="#!/customer">Profile</a></li>
+      <li ng-show="!loggedIn" class="pure-menu-item"><a class="pure-menu-link" href="#!/login">Log In</a></li>
+      <li ng-show="loggedIn" class="pure-menu-item"><a class="pure-menu-link" href="#!/customer">Profile</a></li>
+      <li ng-show="loggedIn" class="pure-menu-item"><a class="pure-menu-link" href="#!/logout">Logout</a></li>
     </ul>
   </div>
 </div>
@@ -26,6 +28,13 @@
                   <div class="item-section">${{item.price}}</div>
                 </div>
                 <div class="pure-u-1-2">
+                  <div class="item-section item-rating" style="white-space:nowrap;">
+                    <i class="fa fa-star-o star-style"></i>
+                    <i class="fa fa-star-o star-style"></i>
+                    <i class="fa fa-star-o star-style"></i>
+                    <i class="fa fa-star-o star-style"></i>
+                    <i class="fa fa-star-o star-style"></i>
+                  </div>
                 </div>
               </div>
             </a>

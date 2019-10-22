@@ -3,9 +3,11 @@
     <img style="width:45px;height:45px;float:left;" ng-src="images/common/case_logo.png" class="pure-img">
     <a class="pure-menu-heading" ng-href="https://www.ibm.com/devops/method/category/architectures/" target="_blank">IBM Cloud Architecture</a>
     <ul class="pure-menu-list">
-      <li class="pure-menu-item"><a class="pure-menu-link" href="/#">Home</a></li>
+      <li class="pure-menu-item"><a class="pure-menu-link" href="#!/">Home</a></li>
       <li class="pure-menu-item pure-menu-selected"><a class="pure-menu-link" href="#!/catalog">Catalog</a></li>
-      <li class="pure-menu-item"><a class="pure-menu-link" href="#!/customer">Profile</a></li>
+      <li ng-show="!loggedIn" class="pure-menu-item"><a class="pure-menu-link" href="#!/login">Log In</a></li>
+      <li ng-show="loggedIn" class="pure-menu-item"><a class="pure-menu-link" href="#!/customer">Profile</a></li>
+      <li ng-show="loggedIn" class="pure-menu-item"><a class="pure-menu-link" href="#!/logout">Logout</a></li>
     </ul>
   </div>
 </div>
@@ -13,13 +15,12 @@
   <div class="content item-content">
     <div class="pure-g">
       <div class="pure-u-1-5 item-top-boxes">
-          <img ng-src="image/{{item.img}}" class="pure-img">
+          <img ng-src="images/items/{{item.img}}" class="pure-img">
       </div>
       <div class="pure-u-4-5 item-top-boxes">
         <div class="pure-u-2-5 item-info-box item-name-box">
           <p class="section-heading">{{item.name}}</p>
           <p>${{item.price}}</p>
-          <p>Stock: {{item.stock}}</p>
         </div>
         <div ng-show="loggedIn" class="pure-u-1-5 item-info-box">
           <form class="pure-form pure-form-stacked">
@@ -56,6 +57,59 @@
       </div>
       <div class="pure-u-1">
         <hr>
+      </div>
+      <div ng-show="showReviewList" class="pure-u-1">
+        <div class="pure-u-1 section-heading" style="margin-bottom: 20px;">
+          <p>Customer Reviews</p>
+        </div>
+        <div ng-show="loggedIn" class="pure-u-1">
+          <button ng-click="showReview = !showReview"class="pure-button pure-button-primary" style="margin-bottom: 30px;">Add Review</button>
+          <!--<a ng-click="showReview = !showReview" style="margin-bottom: 30px;" href="">Click to Add Review</a>-->
+        </div>
+        <div class="pure-u-2-5 item-top-boxes">
+          <form ng-show="showReview" class="pure-form pure-u-4-5">
+            <fieldset>
+                <div>
+                    <label for="stars">Rating:</label>
+                     <div style="float:right;" id="stars" class="starrr" ng-click="getStars()"></div>
+                </div>
+
+                <div class="pure-control-group">
+                    <!--<label for="commemts">Comments</label>-->
+                    <textarea style="width: 100%;margin-top: 20px;" id="comments" type="textarea" ng-model="comments" placeholder="Write your review here"></textarea>
+                </div>
+
+                <div class="pure-controls" style="margin-top:20px;">
+
+                    <button style="width:100%;" ng-click="addReview()" class="pure-button pure-button-primary">Submit</button>
+                </div>
+            </fieldset>
+          </form>
+          <div ng-show="reviewFail" style="color: red;white-space: nowrap;margin-bottom:10px;">
+            * Your review submission was not processed, please try again.
+          </div>
+          <div ng-show="reviewSuccess" style="color: green;white-space: nowrap;margin-bottom:10px;">
+            * Your review was submitted successfully, page will refresh shortly!
+          </div>
+          <div ng-repeat="itemReview in itemReviewList"  class="pure-g">
+            <div class="pure-u-1-2">
+              <div class="reviewer-name">{{itemReview.reviewer_name}}</div>
+            </div>
+            <div class="pure-u-1-2">
+              <div class="review-rating">
+              </div>
+                <i class="fa fa-star star-style"></i>
+                <i ng-class="itemReview.rating >= 2 ? 'fa fa-star star-style' : 'fa fa-star-o star-style'"></i>
+                <i ng-class="itemReview.rating >= 3 ? 'fa fa-star star-style' : 'fa fa-star-o star-style'"></i>
+                <i ng-class="itemReview.rating >= 4 ? 'fa fa-star star-style' : 'fa fa-star-o star-style'"></i>
+                <i ng-class="itemReview.rating >= 5 ? 'fa fa-star star-style' : 'fa fa-star-o star-style'"></i>
+            </div>
+            <div class="pure-u-1">
+              <div class="review-section">{{itemReview.comment}}</div>
+            </div>
+            <hr>
+          </div>
+        </div>
       </div>
     </div>
   </div>

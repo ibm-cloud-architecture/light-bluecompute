@@ -1,3 +1,6 @@
+if (process.env.NEW_RELIC_LICENSE_KEY) {
+    var newrelic = require('newrelic');
+}
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
@@ -8,9 +11,11 @@ var session = require('express-session');
 
 var index = require('./routes/index');
 var catalog = require('./routes/catalog');
+var review = require('./routes/review');
 var customer = require('./routes/customer');
-var images = require('./routes/images');
+//var images = require('./routes/images');
 var orders = require('./routes/orders');
+var auth = require('./routes/auth');
 
 var app = express();
 
@@ -23,6 +28,7 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(cookieParser());
+app.use(express.static(path.join(__dirname, 'public')));
 app.use(session({
   secret: 'ibmApiConnect4me2',
   resave: false,
@@ -32,16 +38,15 @@ app.use(session({
 app.use('/', index);
 app.use('/catalog', catalog);
 app.use('/customer', customer);
-//app.use('/login', login);
+app.use('/review', review);
+app.use('/oauth', auth);
 //app.use('/image', images);
 app.use('/order', orders);
 
 app.use('/', express.static('public/resources'));
 app.use('/', express.static('public/stylesheets'));
-app.use('/bower_components', express.static('bower_components'));
-app.use('/image', express.static('image'));
+app.use('/', express.static('public/javascripts'));
 
-app.use(express.static(path.join(__dirname, 'public')));
 
 //Setup HealthCheck API
 const healthchecks = require('./server/lib/healthchecks');
