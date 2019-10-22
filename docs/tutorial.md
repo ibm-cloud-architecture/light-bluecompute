@@ -457,4 +457,47 @@ Can be the same as the existing one.
 
 ## Appendix 1: Install Kubernetes by using the command line
 
-**TBD**
+To create the Kubernetes cluster from the command line, follow these steps.
+
+1. Log in to IBM Cloud by using the `ibmcloud` command line.
+
+If you are using a federated ID, use the `--sso` option.
+
+```
+ibmcloud login -a cloud.ibm.com --sso
+```
+
+- Get the one time code by opening the URL that is returned to get a one-time passcode that you must enter when you are prompted.
+- Select appropriate account.
+- Then, select a region.
+
+If you are not using a federated ID, use these options:
+
+USERNAME: Your IBM Cloud user name
+PASSWORD: Your IBM Cloud password
+
+For all other parameters, press Enter to accept the default value
+ibmcloud login -a cloud.ibm.com –u <your_ibmcloud_username> -p <password>
+
+2. Initialize the container service plugin.
+
+```
+ibmcloud ks init
+```
+
+3. Create and name your Lite cluster:
+
+```
+bx cs cluster-create --name <cluster-name>
+```
+
+For example, it will be something like below.
+
+```
+bx cs cluster-create --name bc-tutorial
+The 'machine-type' flag was not specified. So a free cluster will be created.
+Creating cluster...
+OK
+```
+
+Tip: To learn more about the IBM Cloud CLI, see the [IBM Cloud Docs](https://console.bluemix.net/docs/cli/reference/ibmcloud/bx_cli.html?cm_mmc=IBMBluemixGarageMethod-_-MethodSite-_-10-19-15::12-31-18-_-ibmcloud-cli-docs&_ga=2.223167707.1122073023.1571672918-306001710.1571349383#ibmcloud_cli).
