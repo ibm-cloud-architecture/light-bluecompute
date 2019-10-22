@@ -438,11 +438,22 @@ import_dashboards.bat <grafana_url> <grafana_password>
 
 ## Task 8 - (Optional) Delete the app from the cluster
 
-**TBD**
+You can delete the app from your cluster by running the below command.
+
+```
+helm delete --purge <chart-name>
+```
+
+For example, it will be as follows.
+
+```
+$ helm delete --purge bluecompute
+release "bluecompute" deleted
+```
 
 ## What's next
 
-**TBD**
+Can be the same as the existing one.
 
 ## Appendix 1: Install Kubernetes by using the command line
 
