@@ -1,5 +1,5 @@
-var app = angular.module('ibm-cloud-arch', ['ngRoute']);
-var baseUrl = '/components/views/';
+var app = angular.module('ibm-cloud-arch', ['ngRoute', 'base64']);
+var baseUrl = 'components/views/';
 
 fetchData().then(bootstrapApp);
 
@@ -43,15 +43,15 @@ app.config(['$routeProvider', function($routeProvider) {
        template: '',
        controller: 'LogoutController'
     })
-		.when('/catalog', {
+    .when('/catalog', {
        templateUrl : baseUrl + 'catalog.html',
        controller: 'CatalogController'
     })
-		.when('/item/:id', {
+    .when('/item/:id', {
        templateUrl : baseUrl + 'item.html',
        controller: 'ItemController'
     })
-		.when('/customer', {
+    .when('/customer', {
        templateUrl : baseUrl + 'customer.html',
        controller: 'CustomerController'
     })

@@ -5,6 +5,13 @@
      <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script>
+        var baseUrl = document.location.href;
+        if (baseUrl.indexOf("/", baseUrl.length - 1) == -1) {
+            baseUrl = baseUrl + "/";
+        }
+        document.write('<base href="' + baseUrl + '" />');
+    </script>
 
 <link rel="stylesheet" href="pure/pure-min.css" />
 <link rel="stylesheet" href="pure/grids-responsive-min.css" />
@@ -15,10 +22,11 @@
 <link rel="stylesheet" href="pure/layouts/login.css" />
 <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" />-->
 
-  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+  <script type="text/javascript" src="jquery/jquery.min.js"></script>
   <script type="text/javascript" src="bower_components/angular/angular.js"></script>
   <script type="text/javascript" src="bower_components/angular-route/angular-route.min.js"></script>
-  <script type="text/javascript" src="../javascripts/stars.js"></script>
+  <script type="text/javascript" src="bower_components/angular-base64/angular-base64.js"></script>
+  <script type="text/javascript" src="stars.js"></script>
   <script type="text/javascript" src="app.js"></script>
 
   	<script src="components/controllers/HomeController.js"></script>
