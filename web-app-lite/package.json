@@ -15,7 +15,7 @@
     "npm": "5.6.0"
   },
   "dependencies": {
-    "bower": "1.8.8",
+    "bower": "1.8.4",
     "body-parser": "1.13.2",
     "cfenv": "1.0.0",
     "chai": "3.4.1",
@@ -25,12 +25,12 @@
     "debug": "2.2.0",
     "express": "4.13.1",
     "express-session": "1.13.0",
-    "handlebars": "4.1.2",
+    "handlebars": "4.0.6",
     "jade": "1.11.0",
     "mocha": "2.3.4",
     "morgan": "1.6.1",
     "ms": "0.7.2",
-    "open": "6.0.0",
+    "open": "0.0.5",
     "pkgcloud": "1.4.0",
     "pretty-hrtime": "1.0.3",
     "promise": "7.1.1",
