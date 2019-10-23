@@ -2,11 +2,11 @@ apiVersion: v1
 entries:
   lightbluecompute:
   - apiVersion: v1
-    created: 2019-10-23T09:44:22.512027436-05:00
+    created: 2019-10-23T12:01:44.214862923-05:00
     description: Bluecompute Microprofile Application Chart
-    digest: bd1a92457ae5cd54173c36d3251d04e32303890ad9f0ffd51087774f883d4021
+    digest: 5c7499cc16ed90e9aedb37457b5f859a0c5e25d5bdf577115011ffcd375a1c1c
     name: lightbluecompute
     urls:
     - lightbluecompute-0.0.1.tgz
     version: 0.0.1
-generated: 2019-10-23T09:44:22.511047599-05:00
+generated: 2019-10-23T12:01:44.213147864-05:00
