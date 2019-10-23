@@ -2,11 +2,11 @@ apiVersion: v1
 entries:
   webapp:
   - apiVersion: v1
-    created: 2019-10-23T09:42:47.898354195-05:00
+    created: 2019-10-23T11:59:16.080286221-05:00
     description: Web app for the Light Bluecompute
-    digest: 0691530e0728c3b8be452863e38615e3fd09bfc8ba929a0310a327a554d01d29
+    digest: 0266703287c0b44436e2e2c75869915ce897bea7c9e13d28849663fe0533dcd3
     name: webapp
     urls:
     - webapp-0.0.1.tgz
     version: 0.0.1
-generated: 2019-10-23T09:42:47.897307565-05:00
+generated: 2019-10-23T11:59:16.079783148-05:00
