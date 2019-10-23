@@ -361,6 +361,231 @@ In this task, you update the web app that you deployed in task 3 and scale it in
 
 Before you begin, be sure to complete task 3.
 
+### Check out the code
+
+Check out the `tutorial-task6` branch:
+
+```
+git checkout tutorial-task6
+```
+
+Go to the `StoreWebApp/public/resources/components/views` directory and open the `home.html` file in a code editor. Make sure that the header tag says `Updated for Tutorial Task 8` instead of `Bluecompute Store!`.
+
+### Update the web app deployment with a new Docker image
+
+In a typical Kubernetes deployment scenario, a developer completes these steps:
+
+1. Change the application code.
+2. Build a new Docker image with the new code changes.
+3. Push the new Docker image to a Docker registry.
+4. Deploy the new Docker image by updating the Kubernetes deployment.
+
+To avoid spending too much time building Docker images in this tutorial, use the pre-built Docker image that was pushed to the ibmcase registry in Docker Hub. You can see the tutorial-task8 image on [Docker Hub](https://cloud.docker.com/u/ibmcase/repository/docker/ibmcase/lightbluecompute-webapp/tags).
+
+Kubernetes defines its components and deployment through sets of `.yaml` files. In this case, the web app deployment and services are defined in the `deployment.yaml` and `service.yaml` files. Take a minute to review this files if you can.
+
+1. Confirm that KUBECONFIG is set:
+
+a. Make sure that your command line has kubectl set up to configure the `bc-tutorial` cluster by entering this command:
+
+```
+kubectl config current-context
+```
+
+The command should return your cluster name:
+
+```
+bc-tutorial
+```
+
+If the command didn't return your cluster name, set the kube configuration by entering the `export KUBECONFIG=...` command.
+
+b. From the output of the `ibmcloud ks cluster-config bc-tutorial` command, get the export command and run it. The export command looks like this example:
+
+```
+export KUBECONFIG=/Users/ibm/.bluemix/plugins/container-service/clusters/bc-tutorial/kube-config-hou02-bc-tutorial.yml
+```
+
+c. Enter the `kubectl config current-context` command again to confirm that kubectl is set to manage your bc-tutorial cluster.
+
+2. Update the Docker image by entering this command:
+
+```
+kubectl set image deployment/bluecompute-webapp-lightblue-deployment webapp=ibmcase/lightbluecompute-webapp:tutorial-task6
+```
+Where:
+
+- `webapp` is the container name that is defined in the `deployment.yaml` file.
+- `lightbluecompute-webapp` is the name of the new Docker image that was pushed to the Docker registry.
+- `tutorial-task6` is the tag of the new Docker image that was pushed to the Docker registry.
+
+3. Make sure that the deployment completed successfully by entering this command:
+
+```
+kubectl describe deploy bluecompute-webapp-lightblue-deployment
+```
+From the output, verify that the `Image` name and the tag of the `Running` pods match what was set (`ibmcase/lightbluecompute-webapp:tutorial-task6`) in the previous step. You might need to scroll through the output to find the `Images(s)` section.
+
+```
+Name:                   bluecompute-webapp-lightblue-deployment
+Namespace:              default
+CreationTimestamp:      Wed, 23 Oct 2019 12:05:42 -0500
+Labels:                 app=webapp
+Annotations:            deployment.kubernetes.io/revision: 2
+Selector:               app=webapp
+Replicas:               1 desired | 1 updated | 1 total | 1 available | 0 unavailable
+StrategyType:           RollingUpdate
+MinReadySeconds:        0
+RollingUpdateStrategy:  1 max unavailable, 1 max surge
+Pod Template:
+  Labels:  app=webapp
+  Containers:
+   webapp:
+    Image:        ibmcase/lightbluecompute-webapp:tutorial-task6
+    Port:         8000/TCP
+    Host Port:    0/TCP
+    Liveness:     tcp-socket :8000 delay=20s timeout=1s period=60s #success=1 #failure=3
+    Environment:  <none>
+    Mounts:
+      /app/config from config-volume (rw)
+  Volumes:
+   config-volume:
+    Type:      ConfigMap (a volume populated by a ConfigMap)
+    Name:      bluecompute-webapp-lightblue-config
+    Optional:  false
+Conditions:
+  Type           Status  Reason
+  ----           ------  ------
+  Available      True    MinimumReplicasAvailable
+OldReplicaSets:  <none>
+NewReplicaSet:   bluecompute-webapp-lightblue-deployment-dd6d99bf8 (1/1 replicas created)
+Events:
+  Type    Reason             Age   From                   Message
+  ----    ------             ----  ----                   -------
+  Normal  ScalingReplicaSet  37m   deployment-controller  Scaled up replica set bluecompute-webapp-lightblue-deployment-6d4f78b759 to 1
+  Normal  ScalingReplicaSet  29s   deployment-controller  Scaled up replica set bluecompute-webapp-lightblue-deployment-dd6d99bf8 to 1
+  Normal  ScalingReplicaSet  29s   deployment-controller  Scaled down replica set bluecompute-webapp-lightblue-deployment-6d4f78b759 to 0
+```
+
+You updated the deployment's images and replicas.
+
+4. Validate the web app.
+
+Open the web app in a browser and verify that the new code is running. You can use the web app URL from Task 3, Step 4, or run two commands to get the app's IP address and port.
+
+a. To get the IP address, enter one of these commands:
+
+- On Mac or Linux systems, enter this command:
+
+```
+kubectl get nodes -o jsonpath='{.items[*].status.addresses[?(@.type=="ExternalIP")].address}'
+```
+
+- On a Windows system, enter this command:
+
+```
+kubectl get nodes -o jsonpath={.items[*].status.addresses[?(@.type==\"ExternalIP\")].address}
+```
+
+b. To get the port, enter this command:
+
+```
+kubectl get service bluecompute-webapp-lightblue-service -o jsonpath='{.spec.ports[0].nodePort}'
+```
+
+c. Open a new browser window and paste the URL, http://<ip>:<port>. The web page is displayed.
+
+![](../images/task6_updated.png)
+
+### Scale up deployment replicas
+
+Scale up the number of pod replicas in the deployment. Pods are the runtime unit in Kubernetes. A pod contains one or more Docker containers.
+
+1. Check how many replicas the deployment currently has by entering this command:
+
+```
+kubectl get deployment bluecompute-webapp-lightblue-deployment
+```
+
+In the output, notice that in the CURRENT column, the deployment has 1 replica.
+
+```
+NAME                                      READY   UP-TO-DATE   AVAILABLE   AGE
+bluecompute-webapp-lightblue-deployment   1/1     1            1           59m
+```
+
+2. Scale the deployment up to 2 replicas by entering this command:
+
+```
+kubectl scale deployment bluecompute-webapp-lightblue-deployment --replicas=2
+```
+
+If the command was successful, this output is displayed:
+
+```
+deployment.extensions/bluecompute-webapp-lightblue-deployment scaled
+```
+
+3. Verify that the deployment has 2 replicas by entering this command:
+
+```
+kubectl get deployment bluecompute-webapp-lightblue-deployment
+```
+
+The CURRENT column how has 2 replicas:
+
+```
+NAME                                      READY   UP-TO-DATE   AVAILABLE   AGE
+bluecompute-webapp-lightblue-deployment   2/2     2            2           61m
+```
+
+4. From the browser where the app is running, refresh the page and make sure that the app is still running.
+
+### Roll back the web app deployment to its original conditions
+
+1. Scale down the number of replicas in deployment to 1 by entering this command:
+
+```
+kubectl scale deployment bluecompute-webapp-lightblue-deployment --replicas=1
+```
+
+This output indicates that the command was successful:
+
+```
+deployment.extensions/bluecompute-webapp-lightblue-deployment scaled
+```
+
+2. Make sure that the deployment has 1 replica by entering this command:
+
+```
+kubectl get deployment bluecompute-webapp-lightblue-deployment
+```
+
+In the output, check the CURRENT column. If the deployment has 1 replica, you scaled down the replica number successfully.
+
+```
+NAME                                      READY   UP-TO-DATE   AVAILABLE   AGE
+bluecompute-webapp-lightblue-deployment   1/1     1            1           64m
+```
+
+3. Roll back the deployment to the original image by entering this command:
+
+```
+kubectl rollout undo deployment/bluecompute-webapp-lightblue-deployment
+```
+
+This output indicates that the command was successful:
+
+```
+deployment.extensions/bluecompute-webapp-lightblue-deployment
+```
+
+4. In the browser where the web app is running, refresh the page. Make sure that your app looks like this example:
+
+![](../images/task6_rollout.png)
+
+You rolled back the web app deployment!
+
 ## Task 7 - (Optional) Monitor the Kubernetes environment with Prometheus and Grafana
 
 Cloud Service Management & Operations (CSMO) is important for cloud-native microservices-style apps.
