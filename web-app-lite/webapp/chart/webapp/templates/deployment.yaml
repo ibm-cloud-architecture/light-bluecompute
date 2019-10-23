@@ -2,6 +2,8 @@ apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   name: {{ .Release.Name }}-{{ .Values.service.name }}-deployment
+  labels:
+    app: webapp
 spec:
   replicas: 1
   template:
@@ -14,14 +16,17 @@ spec:
         - name: "{{  .Chart.Name  }}"
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: "{{ .Values.image.pullPolicy }}"
+          volumeMounts:
+          - name: config-volume
+            mountPath: /app/config
+          ports:
+          - containerPort: {{ .Values.webapp.port }}
+            protocol: TCP
           livenessProbe:
             tcpSocket:
               port: {{ .Values.webapp.port }}
             initialDelaySeconds: 20
             periodSeconds: 60
-          volumeMounts:
-          - name: config-volume
-            mountPath: /StoreWebApp/config
       volumes:
       - name: config-volume
         configMap:

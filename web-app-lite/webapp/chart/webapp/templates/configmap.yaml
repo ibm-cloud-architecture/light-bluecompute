@@ -51,7 +51,6 @@ data:
           "require": [
             "client_id",
             "oauth"
-
           ]
         },
         "oauth20": {
