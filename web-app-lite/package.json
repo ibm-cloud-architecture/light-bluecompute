@@ -15,7 +15,7 @@
     "npm": "5.6.0"
   },
   "dependencies": {
-    "bower": "1.8.4",
+    "bower": "1.8.8",
     "body-parser": "1.13.2",
     "cfenv": "1.0.0",
     "chai": "3.4.1",
