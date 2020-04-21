@@ -1,0 +1,36 @@
+apiVersion: app.ibm.com/v1alpha1
+kind: Deployable
+metadata:
+  annotations:
+    app.ibm.com/is-local-deployable: "false"
+  name: inventory-deploy
+spec:
+  template:
+    apiVersion: extensions/v1beta1
+    kind: Deployment
+    metadata:
+      name: catalog-lightblue-deployment
+    spec:
+      replicas: 1
+      template:
+        metadata:
+          name: pod-catalog
+          labels:
+            app: catalog
+        spec:
+          containers:
+            - name: catalog
+              image: bluemixenablement/lightbluecompute-catalog:latest
+              imagePullPolicy: Always
+              livenessProbe:
+                tcpSocket:
+                  port: 8081
+                initialDelaySeconds: 20
+                periodSeconds: 60
+              env:
+              - name: "spring_datasource_url"
+                value: "jdbc:mysql://mysql-lightblue-service:3306/inventorydb"
+              - name: "spring_datasource_username"
+                value: "dbuser"
+              - name: "spring_datasource_password"
+                value: "Pass4dbUs3R"
