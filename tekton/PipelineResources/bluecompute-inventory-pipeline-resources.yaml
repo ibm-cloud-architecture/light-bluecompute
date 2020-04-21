@@ -18,6 +18,6 @@ items:
     - name: revision
       value: master
     - name: url
-      value: https://github.com/ibm-cloud-architecture/light-bluecompute
+      value: https://github.com/phemankita/light-bluecompute
     type: git
 kind: List
