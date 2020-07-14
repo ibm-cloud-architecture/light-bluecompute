@@ -13,3 +13,5 @@ The implementation of the application can be performed as follows:
 2. Build the container groups that runs the microservices:
     - Catalog application
 3. Deploy Web application
+
+Additionally, tekton pipelines are also enabled.
