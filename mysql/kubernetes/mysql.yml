@@ -21,11 +21,11 @@ spec:
             periodSeconds: 60
           env:
           - name: MYSQL_ROOT_PASSWORD
-            value: "Pass4Admin123"
+            value: "replace_with_mysql_root_passoword"
           - name: MYSQL_USER
-            value: "dbuser"
+            value: "replace_with_mysql_user"
           - name: MYSQL_PASSWORD
-            value: "Pass4dbUs3R"
+            value: "replace_with_mysql_password"
           - name: MYSQL_DATABASE
             value: "inventorydb"
 ---
