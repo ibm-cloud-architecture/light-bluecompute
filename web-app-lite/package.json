@@ -25,7 +25,7 @@
     "debug": "2.2.0",
     "express": "4.13.1",
     "express-session": "1.13.0",
-    "handlebars": "4.0.6",
+    "handlebars": "4.7.7",
     "jade": "1.11.0",
     "mocha": "2.3.4",
     "morgan": "1.6.1",
