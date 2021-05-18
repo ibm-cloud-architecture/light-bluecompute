@@ -265,6 +265,11 @@ ibmcloud ks cluster config --cluster <clustername>
 export KUBECONFIG=/Users/ibm/.bluemix/plugins/container-service/clusters/cloudnativedev/kube-config-prod-mel01-cloudnativedev.yml
 ```
 
+Windows user would prefer the **SETX** command rather than **export**
+```
+SETX KUBECONFIG /Users/ibm/.bluemix/plugins/container-service/clusters/cloudnativedev/kube-config-prod-mel01-cloudnativedev.yml
+```
+
 Paste the export command on the command line and run it.
 
 4. Initialize Helm in your cluster:
@@ -272,6 +277,8 @@ Paste the export command on the command line and run it.
 ```
 helm init
 ```
+
+* Helm init has been removed from helm 3.0 You don't need it anymore. See: https://github.com/helm/helm/issues/6996#issuecomment-555010868
 
 The Helm client and the server side component, tiller, are initialized.
 
