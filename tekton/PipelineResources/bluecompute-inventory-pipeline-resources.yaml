@@ -1,0 +1,23 @@
+apiVersion: v1
+items:
+- apiVersion: tekton.dev/v1alpha1
+  kind: PipelineResource
+  metadata:
+    name: docker-image-inventory
+  spec:
+    params:
+    - name: url
+      value: index.docker.io/bluemixenablement/lightbluecompute-catalog
+    type: image
+- apiVersion: tekton.dev/v1alpha1
+  kind: PipelineResource
+  metadata:
+    name: git-source-inventory
+  spec:
+    params:
+    - name: revision
+      value: master
+    - name: url
+      value: https://github.com/phemankita/light-bluecompute
+    type: git
+kind: List
