@@ -27,7 +27,7 @@
     "express-session": "1.13.0",
     "handlebars": "4.0.6",
     "jade": "1.11.0",
-    "mocha": "2.3.4",
+    "mocha": "10.1.0",
     "morgan": "1.6.1",
     "ms": "0.7.2",
     "open": "0.0.5",
